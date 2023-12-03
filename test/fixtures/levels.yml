@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  current_word: 1
+  run: one
+
+two:
+  current_word: 1
+  run: two
