@@ -36,8 +36,8 @@ class RunsController < ApplicationController
 
   def level_two_answer
     @run.current_level.current_word_completed = true
-    @run.current_level.current_word_guess = params[:guess]
-    if params[:guess].downcase == @run.current_level.current_word[@run.current_level.current_word_options_language].downcase
+    @run.current_level.current_word_guess = params[:guess]&.strip
+    if @run.current_level.current_word_guess.downcase == @run.current_level.current_word[@run.current_level.current_word_options_language].downcase
       @run.current_level.current_word_correct = true
       @run.score = @run.score.to_i + 2
     end
