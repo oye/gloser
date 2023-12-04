@@ -1,11 +1,9 @@
 <div class="text-center">
   <h2 class="text-4xl font-bold text-blue-500 mb-6 inline-block">NIVÅ 1</h2>
 </div>
-<% if !@run.current_level.current_word_completed %>
-  <div class="text-center">
-    <h3 class="text-xl font-bold text-blue-500 mb-6 inline-block">Velg riktig oversettelse av:</h3>
-  </div>
-<% end %>
+<div class="text-center">
+  <h3 class="text-xl font-bold text-blue-500 mb-6 inline-block whitespace-pre"><%= @run.current_level.current_word_completed ? ' ' : 'Velg riktig oversettelse av:' %></h3>
+</div>
 <div class="bg-purple-200 text-purple-800 text-4xl mb-6 mx-auto text-center p-3 rounded-lg"><%=  @run.current_level.current_word[ @run.current_level.current_word_language].capitalize %></div>
 <div class="grid grid-cols-2 gap-6">
   <%  @run.current_level.options_order.each do |option| %>
@@ -22,7 +20,7 @@
                         'bg-blue-500 hover:bg-blue-600'
                       end %>
     <div class="<%= color_class %> text-white rounded-lg text-center text-2xl cursor-pointer">
-      <%=  @run.current_level.current_word_completed? ?  @run.current_level.current_word[attribute_name].capitalize : button_to( @run.current_level.current_word[attribute_name].capitalize, level_one_answer_run_path(@run), params: { guess:   @run.current_level.current_word[attribute_name] }, class: 'p-6 width-full') %>
+      <%=  @run.current_level.current_word_completed? ?  @run.current_level.current_word[attribute_name].capitalize : button_to( @run.current_level.current_word[attribute_name].capitalize, level_one_answer_run_path(@run), params: { guess:   @run.current_level.current_word[attribute_name] }, class: 'py-6 px-8 width-full') %>
     </div>
   <% end %>
 </div>
