@@ -6,8 +6,8 @@ class Run < ApplicationRecord
   after_create :create_levels, :set_current_level
 
   def max_score
-    levels = self.levels.count
-    levels + levels * 2
+    words = Word.where(week:).count
+    words + words * 2
   end
 
   private
