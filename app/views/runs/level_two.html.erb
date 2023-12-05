@@ -7,7 +7,7 @@
 <div class="bg-purple-200 text-purple-800 text-4xl mb-6 mx-auto text-center p-3 rounded-lg"><%=  @run.current_level.current_word[ @run.current_level.current_word_language].capitalize %></div>
 <% if !@run.current_level.current_word_completed %>
   <%= form_with(url: level_two_answer_run_path, class: 'flex') do |form| %>
-    <%= form.text_field :guess, class: 'mr-2' %>
+    <%= form.text_field :guess, class: 'mr-2', autofocus: true %>
     <%= form.submit 'Svar', class: "rounded-lg py-3 px-5 bg-blue-500 text-white inline-block font-medium cursor-pointer hover:bg-blue-600" %>
   <% end %>
 <% end %>
@@ -22,6 +22,6 @@
     </p>
   </div>
   <div class="text-center mt-10">
-    <%= button_to 'Gå til neste >>', next_run_path(@run), class: 'bg-indigo-500 hover:bg-indigo-600 text-center rounder-lg text-white p-4' %>
+    <%= button_to 'Gå til neste >>', next_run_path(@run), class: 'bg-indigo-500 hover:bg-indigo-600 text-center rounder-lg text-white p-4', autofocus: true %>
   </div>
 <% end %>

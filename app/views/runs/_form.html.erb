@@ -28,7 +28,7 @@
   <% end %>
   <div class="my-5">
     <%= form.label :player_name, 'Navn', class: "block text-lg font-bold text-blue-500" %>
-    <%= form.text_field :player_name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_field :player_name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full", autofocus: true %>
   </div>
   <div class="inline">
     <%= form.submit "Start", class: "rounded-lg py-3 px-5 bg-blue-500 text-white inline-block font-medium cursor-pointer hover:bg-blue-600" %>

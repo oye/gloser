@@ -2,8 +2,8 @@
   <h2 class="text-4xl font-bold text-blue-500 mb-6 inline-block">Bra innsats <%= @run.player_name %></h2>
 </div>
 <div class="text-center">
-  <h3 class="text-xl font-bold text-blue-500 mb-6 inline-block">Du fikk <%= @run.score %> av <%= @run.max_score%> mulige poeng</h3>
+  <h3 class="text-xl font-bold text-blue-500 mb-6 inline-block">Du fikk <%= @run.score.to_i %> av <%= @run.max_score%> mulige poeng</h3>
 </div>
 <div class="text-center mt-10">
-  <%= button_to 'Start på nytt', root_path, class: 'bg-indigo-500 hover:bg-indigo-600 text-center rounder-lg text-white p-4', method: :get %>
+  <%= button_to 'Start på nytt', root_path, class: 'bg-indigo-500 hover:bg-indigo-600 text-center rounder-lg text-white p-4', method: :get, autofocus: true %>
 </div>
