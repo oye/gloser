@@ -6,17 +6,30 @@ class Run < ApplicationRecord
   after_create :create_levels, :set_current_level
 
   def max_score
-    words = Word.where(week:).count
-    words + words * 2
+    # 1 point for each correct word in level 1 and 2, 2 points for each correct word in level 3
+    current_level&.word_ids&.size.to_i * 4
+  end
+
+  def current_task_number
+    (current_level.level_number - 1) * current_level&.word_ids&.size.to_i + current_level.word_ids.index(current_level.current_word_id) + 1
+  end
+
+  def total_number_of_tasks
+    current_level&.word_ids&.size.to_i * levels.size
   end
 
   private
 
   def create_levels
-    2.times do |i|
-      word_ids = Word.where(week:).order('random()').collect(&:id)
-      levels.create!(level_number: i + 1, current_word_id: word_ids.first, word_ids:, run: self,
-                     options_order: [nil, 1, 2, 3].shuffle, current_word_english: [true, false].sample)
+    word_ids = Word.where(week:).collect(&:id)
+    3.times do |i|
+      shuffled_word_ids = word_ids.shuffle
+      levels.create!(level_number: i + 1,
+                     current_word_id: shuffled_word_ids.first,
+                     word_ids: shuffled_word_ids,
+                     run: self,
+                     options_order: [nil, 1, 2, 3].shuffle,
+                     current_word_english: [true, false].sample)
     end
   end
 

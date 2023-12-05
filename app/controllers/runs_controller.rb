@@ -39,7 +39,7 @@ class RunsController < ApplicationController
     @run.current_level.current_word_guess = params[:guess]&.strip
     if @run.current_level.current_word_guess.downcase == @run.current_level.current_word[@run.current_level.current_word_options_language].downcase
       @run.current_level.current_word_correct = true
-      @run.score = @run.score.to_i + 2
+      @run.score = @run.score.to_i + @run.current_level.level_number - 1 # add 1 point for level 2 and 2 points for level 3
     end
     @run.current_level.save!
     @run.save!
@@ -50,10 +50,10 @@ class RunsController < ApplicationController
     # move to the next level or end the game
     current_word_index = @run.current_level.word_ids.index(@run.current_level.current_word_id)
     if current_word_index == @run.current_level.word_ids.length - 1
-      if @run.current_level.level_number == 2
+      if @run.current_level.level_number == 3
         redirect_to completed_run_url(@run)
       else
-        @run.current_level = @run.levels.where(level_number: 2).first
+        @run.current_level = @run.levels.where(level_number: @run.current_level.level_number + 1).first
         @run.save!
         redirect_to level_two_run_url(@run)
       end
