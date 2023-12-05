@@ -63,6 +63,8 @@ class RunsController < ApplicationController
       @run.current_level.current_word_completed = false
       @run.current_level.current_word_guess = nil
       @run.current_level.current_word_correct = nil
+      @run.current_level.options_order = @run.current_level.options_order.shuffle
+      @run.current_level.current_word_english = [true, false].sample
       @run.current_level.save!
       if @run.current_level.level_number == 1
         redirect_to level_one_run_url(@run)
