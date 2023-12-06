@@ -38,7 +38,7 @@ class Run < ApplicationRecord
   end
 
   def set_player_name
-    self.player_name = "Spiller #{Run.count + 1}" if player_name.blank?
+    self.player_name = "Spiller #{Run.count + 1}"
   end
 
   def set_current_level

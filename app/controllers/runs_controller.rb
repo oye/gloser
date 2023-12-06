@@ -124,6 +124,6 @@ class RunsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def run_params
-    params.require(:run).permit(:player_name, :quess)
+    params.require(:run).permit(:quess)
   end
 end

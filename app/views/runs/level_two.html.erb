@@ -9,7 +9,7 @@
 </div>
 <% if !@run.current_level.current_word_completed %>
   <%= form_with(url: level_two_answer_run_path, class: 'flex mb-4') do |form| %>
-    <%= form.text_field :guess, class: 'flex-grow mr-2', autofocus: true, autocomplete: 'off' %>
+    <%= form.text_field :guess, class: 'flex-grow mr-2', autocomplete: 'off' %>
     <%= form.submit 'Svar', class: "rounded-lg py-3 px-5 bg-blue-500 text-white inline-block font-medium cursor-pointer hover:bg-blue-600" %>
   <% end %>
   <% if @run.current_level.level_number == 2 &&  %>
