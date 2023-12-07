@@ -50,10 +50,11 @@ class RunsController < ApplicationController
     # move to the next level or end the game
     current_word_index = @run.current_level.word_ids.index(@run.current_level.current_word_id)
     if current_word_index == @run.current_level.word_ids.length - 1
-      if @run.current_level.level_number == 3
+      next_level = @run.levels.where('level_number > ?', @run.current_level.level_number).first
+      if next_level.nil?
         redirect_to completed_run_url(@run)
       else
-        @run.current_level = @run.levels.where(level_number: @run.current_level.level_number + 1).first
+        @run.current_level = next_level
         @run.save!
         redirect_to level_two_run_url(@run)
       end
@@ -83,7 +84,9 @@ class RunsController < ApplicationController
 
     respond_to do |format|
       if @run.save
-        format.html { redirect_to level_one_run_url(@run), notice: "Velkommen #{@run.player_name}!" }
+        format.html do
+          redirect_to @run.current_level.level_number == 1 ? level_one_run_url(@run) : level_two_run_url(@run)
+        end
         format.json { render :show, status: :created, location: @run }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -124,6 +127,6 @@ class RunsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def run_params
-    params.require(:run).permit(:quess)
+    params.require(:run).permit(:quess, selected_levels: [])
   end
 end

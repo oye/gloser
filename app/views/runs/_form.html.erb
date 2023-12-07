@@ -1,5 +1,5 @@
 <h2 class="text-2xl font-bold text-blue-500 mb-4 whitespace-nowrap">Ukas gloser</h2>
-<table class="table-auto w-full my-5">
+<table class="table-auto w-full my-5 shadow-md">
   <thead class="bg-blue-500 text-white">
     <tr>
       <th class="px-4 py-2">Norsk</th>
@@ -15,7 +15,7 @@
     <% end %>
   </tbody>
 </table>
-<%= form_with(model: run, class: "contents") do |form| %>
+<%= form_with(model: run, class: "contents", data: { controller: "checkbox" }) do |form| %>
   <%= form.hidden_field :player_name %>
   <% if run.errors.any? %>
     <div id="error_explanation" class="bg-red-500 text-white px-3 py-2 font-medium rounded-lg mt-3">
@@ -27,7 +27,14 @@
       </ul>
     </div>
   <% end %>
+  <h3 class="text-base font-bold text-blue-500 whitespace-nowrap">Velg ønskede nivåer</h3>
+  <% ['Nivå 1 - Velg riktig ord', 'Nivå 2 - Skriv riktig ord med hint', 'Nivå 3 - Skriv riktig ord uten hjelp'].each_with_index do |level, i| %>
+    <div class="field">
+      <%= form.check_box :selected_levels, { multiple: true, class: 'form-checkbox h-6 w-6 my-1 text-green-500 rounded-full shadow-md', checked: true, data: { action: "change->checkbox#check", checkbox_target: "option" }}, i+1, nil  %>
+      <%= form.label :selected_levels, level, class: "ml-2 text-gray-700 text-sm font-medium" %>
+    </div>
+  <% end %>
   <div class="inline">
-    <%= form.submit "Start", class: "rounded-lg py-3 px-5 bg-blue-500 text-white inline-block font-medium cursor-pointer hover:bg-blue-600", autofocus: true %>
+    <%= form.submit "Start", class: "rounded-lg mt-3 py-3 px-5 bg-blue-500 text-white inline-block font-medium cursor-pointer hover:bg-blue-600 shadow-md", autofocus: true %>
   </div>
 <% end %>

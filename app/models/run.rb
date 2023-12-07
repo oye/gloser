@@ -1,4 +1,6 @@
 class Run < ApplicationRecord
+  attr_accessor :selected_levels
+
   has_many :levels, dependent: :destroy
   belongs_to :current_level, foreign_key: :current_level_id, class_name: 'Level', optional: true
 
@@ -7,11 +9,12 @@ class Run < ApplicationRecord
 
   def max_score
     # 1 point for each correct word in level 1 and 2, 2 points for each correct word in level 3
-    current_level&.word_ids&.size.to_i * 4
+    levels.sum { |level| level.level_number == 3 ? level.word_ids.size * 2 : level.word_ids.size }
   end
 
   def current_task_number
-    (current_level.level_number - 1) * current_level&.word_ids&.size.to_i + current_level.word_ids.index(current_level.current_word_id) + 1
+    current_level.word_ids.index(current_level.current_word_id) + 1 + levels.where('level_number < ?',
+                                                                                   current_level.level_number).count * current_level.word_ids.size
   end
 
   def total_number_of_tasks
@@ -22,9 +25,9 @@ class Run < ApplicationRecord
 
   def create_levels
     word_ids = Word.where(week:).collect(&:id)
-    3.times do |i|
+    selected_levels.each do |level_number|
       shuffled_word_ids = word_ids.shuffle
-      levels.create!(level_number: i + 1,
+      levels.create!(level_number:,
                      current_word_id: shuffled_word_ids.first,
                      word_ids: shuffled_word_ids,
                      run: self,
@@ -42,7 +45,7 @@ class Run < ApplicationRecord
   end
 
   def set_current_level
-    self.current_level = levels.where(level_number: 1).first
+    self.current_level = levels.order(:level_number).first
     save!
   end
 end
