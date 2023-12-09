@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <% Word.where(week: Date.today.cweek).each do |word| %>
+    <% Word.where(week: Date.today.cweek, year: Date.today.year).each do |word| %>
       <tr class="bg-blue-200">
         <td class="border px-4 py-2"><%= word.norwegian.capitalize %></td>
         <td class="border px-4 py-2"><%= word.english.capitalize %></td>
