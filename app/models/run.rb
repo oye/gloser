@@ -1,4 +1,4 @@
-class Run < ApplicationRecord
+class Run < ApplicationRecord # rubocop:disable Style/Documentation,Style/FrozenStringLiteralComment
   attr_accessor :selected_levels
 
   has_many :levels, dependent: :destroy
@@ -13,8 +13,10 @@ class Run < ApplicationRecord
   end
 
   def current_task_number
-    current_level.word_ids.index(current_level.current_word_id) + 1 + levels.where('level_number < ?',
-                                                                                   current_level.level_number).count * current_level.word_ids.size
+    completed_tasks_in_previous_levels = levels.where('level_number < ?',
+                                                      current_level.level_number).count * current_level.word_ids.size
+    current_task_in_current_level = current_level.word_ids.index(current_level.current_word_id) + 1
+    completed_tasks_in_previous_levels + current_task_in_current_level
   end
 
   def total_number_of_tasks

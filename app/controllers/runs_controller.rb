@@ -1,124 +1,135 @@
-class RunsController < ApplicationController
+class RunsController < ApplicationController # rubocop:disable Style/Documentation,Style/FrozenStringLiteralComment,Metrics/ClassLength
   before_action :set_run,
-                only: %i[show edit update destroy level_one level_two level_one_answer level_two_answer next completed]
-
-  # GET /runs or /runs.json
-  def index
-    @runs = Run.all
-  end
-
-  # GET /runs/1 or /runs/1.json
-  def show; end
+                only: %i[level_one level_two level_one_answer level_two_answer next]
 
   # GET /runs/new
   def new
     @run = Run.new
   end
 
-  # GET /runs/1/edit
-  def edit; end
-
+  # GET /runs/1/level_one
   def level_one; end
 
+  # GET /runs/1/level_two
   def level_two; end
 
+  # POST /runs/1/level_one_answer
   def level_one_answer
-    @run.current_level.current_word_completed = true
-    @run.current_level.current_word_guess = params[:guess]
-    if params[:guess].downcase == @run.current_level.current_word[@run.current_level.current_word_options_language].downcase
-      @run.current_level.current_word_correct = true
-      @run.score = @run.score.to_i + 1
-    end
-    @run.current_level.save!
-    @run.save!
+    process_answer
     redirect_to level_one_run_url(@run)
   end
 
+  # POST /runs/1/level_two_answer
   def level_two_answer
-    @run.current_level.current_word_completed = true
-    @run.current_level.current_word_guess = params[:guess]&.strip
-    if @run.current_level.current_word_guess.downcase == @run.current_level.current_word[@run.current_level.current_word_options_language].downcase
-      @run.current_level.current_word_correct = true
-      @run.score = @run.score.to_i + @run.current_level.level_number - 1 # add 1 point for level 2 and 2 points for level 3
-    end
-    @run.current_level.save!
-    @run.save!
+    process_answer
     redirect_to level_two_run_url(@run)
   end
 
+  # POST /runs/1/next
   def next
-    # move to the next level or end the game
     current_word_index = @run.current_level.word_ids.index(@run.current_level.current_word_id)
     if current_word_index == @run.current_level.word_ids.length - 1
-      next_level = @run.levels.where('level_number > ?', @run.current_level.level_number).first
-      if next_level.nil?
-        redirect_to completed_run_url(@run)
-      else
-        @run.current_level = next_level
-        @run.save!
-        redirect_to level_two_run_url(@run)
-      end
+      process_next_level
     else
-      # move to the next word
-      @run.current_level.current_word_id = @run.current_level.word_ids[current_word_index + 1]
-      @run.current_level.current_word_completed = false
-      @run.current_level.current_word_guess = nil
-      @run.current_level.current_word_correct = nil
-      @run.current_level.options_order = @run.current_level.options_order.shuffle
-      @run.current_level.current_word_english = [true, false].sample
-      @run.current_level.save!
-      if @run.current_level.level_number == 1
-        redirect_to level_one_run_url(@run)
-      else
-        redirect_to level_two_run_url(@run)
-      end
+      process_next_word(current_word_index)
     end
   end
 
   # GET /runs/1/completed
-  def completed; end
+  def completed
+    @run = Run.find_by(id: params[:id])
+    return unless @run
+
+    session[:score] = @run.score
+    session[:max_score] = @run.max_score
+    @run.destroy
+  end
 
   # POST /runs or /runs.json
   def create
     @run = Run.new(run_params)
-
     respond_to do |format|
       if @run.save
-        format.html do
-          redirect_to @run.current_level.level_number == 1 ? level_one_run_url(@run) : level_two_run_url(@run)
-        end
-        format.json { render :show, status: :created, location: @run }
+        process_run_creation(format)
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @run.errors, status: :unprocessable_entity }
+        handle_run_creation_failure(format)
       end
-    end
-  end
-
-  # PATCH/PUT /runs/1 or /runs/1.json
-  def update
-    respond_to do |format|
-      if @run.update(run_params)
-        format.html { redirect_to run_url(@run), notice: 'Run was successfully updated.' }
-        format.json { render :show, status: :ok, location: @run }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @run.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /runs/1 or /runs/1.json
-  def destroy
-    @run.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to runs_url, notice: 'Run was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
   private
+
+  def process_next_level
+    next_level = @run.levels.where('level_number > ?', @run.current_level.level_number).first
+    if next_level.nil?
+      redirect_to completed_run_url(@run)
+    else
+      @run.current_level = next_level
+      @run.save!
+      redirect_to level_two_run_url(@run)
+    end
+  end
+
+  def process_next_word(current_word_index)
+    @run.current_level.current_word_id = @run.current_level.word_ids[current_word_index + 1]
+    reset_current_word
+    @run.current_level.save!
+    redirect_to_correct_level
+  end
+
+  def shuffle_options_and_randomize_language
+    @run.current_level.options_order = @run.current_level.options_order.shuffle
+    @run.current_level.current_word_english = [true, false].sample
+  end
+
+  def redirect_to_correct_level
+    if @run.current_level.level_number == 1
+      redirect_to level_one_run_url(@run)
+    else
+      redirect_to level_two_run_url(@run)
+    end
+  end
+
+  def reset_current_word
+    @run.current_level.current_word_completed = false
+    @run.current_level.current_word_guess = nil
+    @run.current_level.current_word_correct = nil
+  end
+
+  def process_run_creation(format)
+    format.html do
+      redirect_to @run.current_level.level_number == 1 ? level_one_run_url(@run) : level_two_run_url(@run)
+    end
+    format.json { render :show, status: :created, location: @run }
+  end
+
+  def handle_run_creation_failure(format)
+    format.html { render :new, status: :unprocessable_entity }
+    format.json { render json: @run.errors, status: :unprocessable_entity }
+  end
+
+  def process_answer
+    @run.current_level.current_word_completed = true
+    @run.current_level.current_word_guess = params[:guess]&.strip
+    update_scores if correct_guess?
+    save_changes
+  end
+
+  def update_scores
+    @run.current_level.current_word_correct = true
+    @run.score = @run.score.to_i + (@run.current_level.level_number == 3 ? 2 : 1)
+  end
+
+  def correct_guess?
+    guess = @run.current_level.current_word_guess.downcase
+    correct_word = @run.current_level.current_word[@run.current_level.current_word_options_language].downcase
+    guess == correct_word
+  end
+
+  def save_changes
+    @run.current_level.save!
+    @run.save!
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_run

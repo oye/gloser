@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :runs do
+  resources :runs, only: %i[new create] do
     member do
       get :level_one
       get :level_two
