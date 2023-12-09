@@ -4,7 +4,7 @@ class Run < ApplicationRecord
   has_many :levels, dependent: :destroy
   belongs_to :current_level, foreign_key: :current_level_id, class_name: 'Level', optional: true
 
-  before_create :set_week, :set_player_name
+  before_create :set_week_and_year, :set_player_name
   after_create :create_levels, :set_current_level
 
   def max_score
@@ -24,7 +24,7 @@ class Run < ApplicationRecord
   private
 
   def create_levels
-    word_ids = Word.where(week:).collect(&:id)
+    word_ids = Word.where(week:, year:).collect(&:id)
     selected_levels.each do |level_number|
       shuffled_word_ids = word_ids.shuffle
       levels.create!(level_number:,
@@ -36,8 +36,9 @@ class Run < ApplicationRecord
     end
   end
 
-  def set_week
+  def set_week_and_year
     self.week = Date.today.cweek
+    self.year = Date.today.year
   end
 
   def set_player_name
