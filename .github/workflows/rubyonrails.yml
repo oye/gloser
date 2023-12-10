@@ -26,6 +26,11 @@ jobs:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
     steps:
+      - name: Install PostgreSQL client
+        run: sudo apt-get -yqq install libpq-dev
+      - name: Set up PostgreSQL extension
+        run: |
+          PGPASSWORD=password psql -h localhost -U rails -d rails_test -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
       - name: Checkout code
         uses: actions/checkout@v3
       # Add or replace dependency steps here
