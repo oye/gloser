@@ -1,11 +1,27 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 # This model initially had no columns defined. If you add columns to the
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  norwegian: norsk
+  english: english
+  wrong_norwegian1: feil norsk 1
+  wrong_norwegian2: feil norsk 2
+  wrong_norwegian3: feil norsk 3
+  wrong_english1: wrong english 1
+  wrong_english2: wrong english 2
+  wrong_english3: wrong english 3
+  week: <%= Date.today.cweek %>
+  year: <%= Date.today.year %>
+two:
+  norwegian: norsk2
+  english: english2
+  wrong_norwegian1: feil norsk 1-2
+  wrong_norwegian2: feil norsk 2-2
+  wrong_norwegian3: feil norsk 3-2
+  wrong_english1: wrong english 1-2
+  wrong_english2: wrong english 2-2
+  wrong_english3: wrong english 3-2
+  week: <%= Date.today.cweek %>
+  year: <%= Date.today.year %>

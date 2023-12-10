@@ -1,45 +1,45 @@
-require "application_system_test_case"
+require 'application_system_test_case'
 
 class RunsTest < ApplicationSystemTestCase
   setup do
     @run = runs(:one)
   end
 
-  test "visiting the index" do
+  test 'visiting the index' do
     visit runs_url
-    assert_selector "h1", text: "Runs"
+    assert_selector 'h1', text: 'Runs'
   end
 
-  test "should create run" do
+  test 'should create run' do
     visit runs_url
-    click_on "New run"
+    click_on 'New run'
 
-    fill_in "Player name", with: @run.player_name
-    fill_in "Score", with: @run.score
-    fill_in "Week", with: @run.week
-    click_on "Create Run"
+    fill_in 'Player name', with: @run.player_name
+    fill_in 'Score', with: @run.score
+    fill_in 'Week', with: @run.week
+    click_on 'Create Run'
 
-    assert_text "Run was successfully created"
-    click_on "Back"
+    assert_text 'Run was successfully created'
+    click_on 'Back'
   end
 
-  test "should update Run" do
+  test 'should update Run' do
     visit run_url(@run)
-    click_on "Edit this run", match: :first
+    click_on 'Edit this run', match: :first
 
-    fill_in "Player name", with: @run.player_name
-    fill_in "Score", with: @run.score
-    fill_in "Week", with: @run.week
-    click_on "Update Run"
+    fill_in 'Player name', with: @run.player_name
+    fill_in 'Score', with: @run.score
+    fill_in 'Week', with: @run.week
+    click_on 'Update Run'
 
-    assert_text "Run was successfully updated"
-    click_on "Back"
+    assert_text 'Run was successfully updated'
+    click_on 'Back'
   end
 
-  test "should destroy Run" do
+  test 'should destroy Run' do
     visit run_url(@run)
-    click_on "Destroy this run", match: :first
+    click_on 'Destroy this run', match: :first
 
-    assert_text "Run was successfully destroyed"
+    assert_text 'Run was successfully destroyed'
   end
 end
