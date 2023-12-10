@@ -1,1 +1,1 @@
-json.partial! "runs/run", run: @run
+json.partial! 'runs/run', run: @run

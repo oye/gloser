@@ -1,4 +1,4 @@
-class RunsController < ApplicationController # rubocop:disable Style/Documentation,Style/FrozenStringLiteralComment,Metrics/ClassLength
+class RunsController < ApplicationController # rubocop:disable Style/Documentation,Metrics/ClassLength
   before_action :set_run,
                 only: %i[level_one level_two level_one_answer level_two_answer next]
 

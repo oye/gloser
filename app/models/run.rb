@@ -1,4 +1,4 @@
-class Run < ApplicationRecord # rubocop:disable Style/Documentation,Style/FrozenStringLiteralComment
+class Run < ApplicationRecord # rubocop:disable Style/Documentation
   attr_accessor :selected_levels
 
   has_many :levels, dependent: :destroy
