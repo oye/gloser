@@ -50,7 +50,11 @@ class RunsControllerTest < ActionDispatch::IntegrationTest
     @common_run.current_level.current_word_id = @common_run.current_level.word_ids.sample
     @common_run.current_level.save
     post next_run_url(@common_run)
-    if @common_run.current_level.word_ids.index(@common_run.current_level.current_word_id) == @common_run.current_level.word_ids.length - 1
+
+    current_word_index = @common_run.current_level.word_ids.index(@common_run.current_level.current_word_id)
+    last_word_index = @common_run.current_level.word_ids.length - 1
+
+    if current_word_index == last_word_index
       assert_redirected_to level_two_run_url(@common_run)
     else
       assert_redirected_to level_one_run_url(@common_run)

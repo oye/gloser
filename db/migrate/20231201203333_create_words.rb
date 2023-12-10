@@ -1,5 +1,5 @@
-class CreateWords < ActiveRecord::Migration[7.1]
-  def change
+class CreateWords < ActiveRecord::Migration[7.1] # rubocop:disable Style/Documentation
+  def change # rubocop:disable Metrics/MethodLength
     create_table :words do |t|
       t.string :norwegian, null: false
       t.string :english, null: false

@@ -1,5 +1,5 @@
-class CreateLevels < ActiveRecord::Migration[7.1]
-  def change
+class CreateLevels < ActiveRecord::Migration[7.1] # rubocop:disable Style/Documentation
+  def change # rubocop:disable Metrics/MethodLength
     create_table :levels do |t|
       t.integer :current_word_id
       t.boolean :current_word_english
