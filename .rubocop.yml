@@ -5,3 +5,6 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'db/**/*'
+inherit_mode:
+  merge:
+    - Exclude
