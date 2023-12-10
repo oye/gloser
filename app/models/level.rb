@@ -1,6 +1,6 @@
 class Level < ApplicationRecord # rubocop:disable Style/Documentation
   belongs_to :run
-  belongs_to :current_word, foreign_key: :current_word_id, class_name: 'Word', optional: true
+  belongs_to :current_word, class_name: 'Word', optional: true, inverse_of: :levels
 
   def current_word_language
     current_word_english? ? 'english' : 'norwegian'

@@ -2,7 +2,7 @@ class Run < ApplicationRecord # rubocop:disable Style/Documentation
   attr_accessor :selected_levels
 
   has_many :levels, dependent: :destroy
-  belongs_to :current_level, foreign_key: :current_level_id, class_name: 'Level', optional: true
+  belongs_to :current_level, class_name: 'Level', optional: true, inverse_of: :run
 
   before_create :set_week_and_year, :set_player_name
   after_create :create_levels, :set_current_level
@@ -39,8 +39,8 @@ class Run < ApplicationRecord # rubocop:disable Style/Documentation
   end
 
   def set_week_and_year
-    self.week = Date.today.cweek
-    self.year = Date.today.year
+    self.week = Time.zone.today.cweek
+    self.year = Time.zone.today.year
   end
 
   def set_player_name

@@ -53,6 +53,7 @@ group :development, :test do
   gem 'bundler-audit', require: false
   gem 'debug', platforms: %i[mri windows]
   gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :development do
