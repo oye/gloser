@@ -3,9 +3,18 @@
     <h2 class="text-4xl font-bold text-blue-700 mb-6 inline-block">Bra innsats!</h2>
   </div>
   <div class="text-center">
-    <h3 class="text-xl font-bold text-blue-700 mb-6 inline-block">Du fikk <%= session[:score].to_i %> av <%= session[:max_score]%> mulige poeng</h3>
+    <h3 class="text-xl font-bold text-blue-700 mb-6 inline-block">Du fikk
+      <%= session[:score].to_i %>
+      av
+      <%= session[:max_score] %>
+      mulige poeng</h3>
   </div>
-  <div class="text-center mt-10">
-    <%= button_to 'Start på nytt', root_path, class: 'bg-indigo-700 hover:bg-indigo-600 text-center rounder-lg text-white p-4', method: :get, autofocus: true %>
+  <div class="text-center mt-10 p-2">
+    <%= button_to "Start på nytt",
+    root_path,
+    class:
+      "bg-indigo-700 hover:bg-indigo-600 text-center rounder-lg text-white p-4",
+    method: :get,
+    autofocus: true %>
   </div>
 </div>
