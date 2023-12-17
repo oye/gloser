@@ -4,6 +4,7 @@ class RunsController < ApplicationController # rubocop:disable Style/Documentati
 
   # GET /runs/new
   def new
+    @this_weeks_words = Word.where(week: Time.zone.today.cweek, year: Time.zone.today.year)
     @run = Run.new
   end
 
