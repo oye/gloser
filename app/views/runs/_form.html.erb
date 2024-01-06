@@ -1,9 +1,12 @@
 <div class="bg-gray-100 p-5">
-  <h2 class="text-3xl font-bold text-blue-700 mb-6 whitespace-nowrap">Gloser for uke:
-    <%= form_with(url: new_run_path, method: :get) do |form| %>
-      <%= form.week_field :week, value: @current_date.strftime("%Y-W%V"), onchange: "this.form.submit()" %>
-    <% end %>
-  </h2>
+  <h2 class="text-3xl font-bold text-blue-700 whitespace-nowrap">Gloser for uke:</h2>
+  <%= form_with(url: new_run_path, method: :get) do |form| %>
+    <%= form.week_field :week,
+                    value: @current_date.strftime("%Y-W%V"),
+                    onchange: "this.form.submit()",
+                    class:
+                      "w-2/3 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" %>
+  <% end %>
   <% if @this_weeks_words.empty? %>
     <h3 class="text-2xl font-bold text-blue-700 mb-6 whitespace-nowrap">Ingen gloser denne uken</h3>
   <% else %>
