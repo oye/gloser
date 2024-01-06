@@ -2,11 +2,11 @@
 
 one:
   player_name: Player name
-  week: 1
-  year: 2023
+  week: <%= Time.zone.today.cweek %>
+  year: <%= Time.zone.today.year %>
   
 
 two:
-  player_name: MyString
-  score: 1
-  week: 1
+  player_name: Player name 2
+  week: <%= Time.zone.today.cweek %>
+  year: <%= Time.zone.today.year %>

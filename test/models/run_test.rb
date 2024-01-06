@@ -2,7 +2,7 @@ require 'test_helper'
 
 class RunTest < ActiveSupport::TestCase
   setup do
-    @run = Run.new(selected_levels: [1, 2, 3])
+    @run = Run.new(selected_levels: [1, 2, 3], week: Time.zone.today.cweek, year: Time.zone.today.year)
   end
 
   test 'should save run' do

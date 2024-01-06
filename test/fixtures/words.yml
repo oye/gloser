@@ -12,8 +12,8 @@ one:
   wrong_english1: wrong english 1
   wrong_english2: wrong english 2
   wrong_english3: wrong english 3
-  week: <%= Date.today.cweek %>
-  year: <%= Date.today.year %>
+  week: <%= Time.zone.today.cweek %>
+  year: <%= Time.zone.today.year %>
 two:
   norwegian: norsk2
   english: english2
@@ -23,5 +23,5 @@ two:
   wrong_english1: wrong english 1-2
   wrong_english2: wrong english 2-2
   wrong_english3: wrong english 3-2
-  week: <%= Date.today.cweek %>
-  year: <%= Date.today.year %>
+  week: <%= Time.zone.today.cweek %>
+  year: <%= Time.zone.today.year %>

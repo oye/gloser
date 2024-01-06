@@ -4,7 +4,7 @@ class RunsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @run = runs(:one)
     @selected_levels_sets = [[1, 2, 3], [1, 2], [1], [2], [3], [1, 3], [2, 3]]
-    post runs_url, params: { run: { selected_levels: [1, 2, 3] } }
+    post runs_url, params: { run: { selected_levels: [1, 2, 3], year: @run.year, week: @run.week } }
     @common_run = Run.order(:created_at).last
   end
 
