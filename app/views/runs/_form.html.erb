@@ -1,8 +1,12 @@
 <div class="bg-gray-100 p-5">
+  <h2 class="text-3xl font-bold text-blue-700 mb-6 whitespace-nowrap">Gloser for uke:
+    <%= form_with(url: new_run_path, method: :get) do |form| %>
+      <%= form.week_field :week, value: @current_date.strftime("%Y-W%V"), onchange: "this.form.submit()" %>
+    <% end %>
+  </h2>
   <% if @this_weeks_words.empty? %>
-    <h2 class="text-3xl font-bold text-blue-700 mb-6 whitespace-nowrap">Ingen gloser denne uken</h2>
+    <h3 class="text-2xl font-bold text-blue-700 mb-6 whitespace-nowrap">Ingen gloser denne uken</h3>
   <% else %>
-    <h2 class="text-3xl font-bold text-blue-700 mb-6 whitespace-nowrap">Ukas gloser</h2>
     <table class="table-auto my-5 shadow-lg rounded-lg overflow-hidden">
       <thead class="bg-blue-700 text-white">
         <tr>
@@ -20,7 +24,8 @@
       </tbody>
     </table>
     <%= form_with(model: run, class: "contents bg-white p-6 rounded-lg shadow-lg", data: { controller: "checkbox" }) do |form| %>
-      <%= form.hidden_field :player_name %>
+      <%= form.hidden_field :week, value: @current_date.cweek %>
+      <%= form.hidden_field :year, value: @current_date.year %>
       <% if run.errors.any? %>
         <div id="error_explanation" class="bg-red-500 text-white px-3 py-2 font-medium rounded-lg mt-3">
           <h2><%= pluralize(run.errors.count, "error") %>

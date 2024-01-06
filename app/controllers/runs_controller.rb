@@ -4,7 +4,15 @@ class RunsController < ApplicationController # rubocop:disable Style/Documentati
 
   # GET /runs/new
   def new
-    @this_weeks_words = Word.where(week: Time.zone.today.cweek, year: Time.zone.today.year)
+    @current_date = Time.zone.today
+    if params[:week].present?
+      begin
+        @current_date = Date.parse(params[:week])
+      rescue Date::Error => e
+        flash[:error] = "Ugyldig dato: #{e}"
+      end
+    end
+    @this_weeks_words = Word.where(week: @current_date.cweek, year: @current_date.year)
     @run = Run.new
   end
 
@@ -74,6 +82,7 @@ class RunsController < ApplicationController # rubocop:disable Style/Documentati
   def process_next_word(current_word_index)
     @run.current_level.current_word_id = @run.current_level.word_ids[current_word_index + 1]
     reset_current_word
+    @run.current_level.current_word_english = [true, false].sample
     @run.current_level.save!
     redirect_to_correct_level
   end
@@ -139,6 +148,6 @@ class RunsController < ApplicationController # rubocop:disable Style/Documentati
 
   # Only allow a list of trusted parameters through.
   def run_params
-    params.require(:run).permit(:quess, selected_levels: [])
+    params.require(:run).permit(:quess, :year, :week, selected_levels: [])
   end
 end
