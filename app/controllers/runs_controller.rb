@@ -131,8 +131,10 @@ class RunsController < ApplicationController # rubocop:disable Style/Documentati
   end
 
   def correct_guess?
-    guess = @run.current_level.current_word_guess.downcase
-    correct_word = @run.current_level.current_word[@run.current_level.current_word_options_language].downcase
+    guess = @run.current_level.current_word_guess.downcase.gsub(/[^a-zæøå0-9\s]/i, '')
+    correct_word = @run.current_level.current_word[@run.current_level.current_word_options_language].downcase.gsub(
+      /[^a-zæøå0-9\s]/i, ''
+    )
     guess == correct_word
   end
 

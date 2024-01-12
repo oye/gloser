@@ -36,13 +36,27 @@ class RunsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'should post level_one_answer and redirect to level_one' do
-    post level_one_answer_run_url(@common_run), params: { guess: 'guess' }
+  test 'should post level_one_answer with correct guess and redirect to level_one' do
+    @common_run.current_level.current_word[@common_run.current_level.current_word_options_language] = 'correct_guess'
+    post level_one_answer_run_url(@common_run), params: { guess: 'correct_guess' }
     assert_redirected_to level_one_run_url(@common_run)
   end
 
-  test 'should post level_two_answer and redirect to level_two' do
-    post level_two_answer_run_url(@common_run), params: { guess: 'guess' }
+  test 'should post level_one_answer with incorrect guess and redirect to level_one' do
+    @common_run.current_level.current_word[@common_run.current_level.current_word_options_language] = 'correct_guess'
+    post level_one_answer_run_url(@common_run), params: { guess: 'incorrect_guess' }
+    assert_redirected_to level_one_run_url(@common_run)
+  end
+
+  test 'should post level_two_answer with correct guess and redirect to level_two' do
+    @common_run.current_level.current_word[@common_run.current_level.current_word_options_language] = 'I`m feeling sick'
+    post level_two_answer_run_url(@common_run), params: { guess: 'Im feeling sick.' }
+    assert_redirected_to level_two_run_url(@common_run)
+  end
+
+  test 'should post level_two_answer with incorrect guess and redirect to level_two' do
+    @common_run.current_level.current_word[@common_run.current_level.current_word_options_language] = 'correct_guess'
+    post level_two_answer_run_url(@common_run), params: { guess: 'incorrect_guess' }
     assert_redirected_to level_two_run_url(@common_run)
   end
 
