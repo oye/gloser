@@ -82,13 +82,13 @@ class RunsController < ApplicationController # rubocop:disable Style/Documentati
   def process_next_word(current_word_index)
     @run.current_level.current_word_id = @run.current_level.word_ids[current_word_index + 1]
     reset_current_word
-    @run.current_level.current_word_english = [true, false].sample
+    shuffle_options_and_randomize_language
     @run.current_level.save!
     redirect_to_correct_level
   end
 
   def shuffle_options_and_randomize_language
-    @run.current_level.options_order = @run.current_level.options_order.shuffle
+    @run.current_level.options_order.shuffle!
     @run.current_level.current_word_english = [true, false].sample
   end
 
