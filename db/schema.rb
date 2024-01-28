@@ -10,49 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_231_209_153_325) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_28_132741) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'levels', force: :cascade do |t|
-    t.integer 'current_word_id'
-    t.boolean 'current_word_english'
-    t.boolean 'current_word_completed'
-    t.boolean 'current_word_correct'
-    t.string 'current_word_guess'
-    t.integer 'options_order', array: true
-    t.integer 'level_number'
-    t.uuid 'run_id', null: false
-    t.integer 'word_ids', array: true
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['run_id'], name: 'index_levels_on_run_id'
+  create_table "levels", force: :cascade do |t|
+    t.integer "current_word_id"
+    t.boolean "current_word_english"
+    t.boolean "current_word_completed"
+    t.boolean "current_word_correct"
+    t.string "current_word_guess"
+    t.integer "options_order", array: true
+    t.integer "level_number"
+    t.uuid "run_id", null: false
+    t.integer "word_ids", array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["run_id"], name: "index_levels_on_run_id"
   end
 
-  create_table 'runs', id: :uuid, default: -> { 'gen_random_uuid()' }, force: :cascade do |t|
-    t.string 'player_name'
-    t.integer 'score'
-    t.integer 'week'
-    t.integer 'current_level_id'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.integer 'year'
+  create_table "runs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "player_name"
+    t.integer "score"
+    t.integer "week"
+    t.integer "current_level_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "year"
   end
 
-  create_table 'words', force: :cascade do |t|
-    t.string 'norwegian', null: false
-    t.string 'english', null: false
-    t.string 'wrong_norwegian1', null: false
-    t.string 'wrong_norwegian2', null: false
-    t.string 'wrong_norwegian3', null: false
-    t.string 'wrong_english1', null: false
-    t.string 'wrong_english2', null: false
-    t.string 'wrong_english3', null: false
-    t.integer 'week', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.integer 'year'
+  create_table "words", force: :cascade do |t|
+    t.string "norwegian", null: false
+    t.string "english", null: false
+    t.string "wrong_norwegian1", null: false
+    t.string "wrong_norwegian2", null: false
+    t.string "wrong_norwegian3", null: false
+    t.string "wrong_english1", null: false
+    t.string "wrong_english2", null: false
+    t.string "wrong_english3", null: false
+    t.integer "week", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "year"
   end
 
-  add_foreign_key 'levels', 'runs'
+  add_foreign_key "levels", "runs"
 end
